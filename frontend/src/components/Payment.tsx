@@ -1,5 +1,7 @@
 import React from "react";
 import ReactLoading from "react-loading";
+import * as AlertDialog from "@/components/ui/alert-dialog";
+import * as Table from "@/components/ui/table";
 import {
   Card,
   CardContent,
@@ -32,7 +34,13 @@ export default function Payment() {
       setProcessing(false);
     });
   }
+
+  const handleClear = () => {
+    setPayFilePath("");
+    setResult(null);
+  }
   return (
+    <React.Fragment>
     <Card>
       <CardHeader>
         <CardTitle>Pagos</CardTitle>
@@ -66,5 +74,90 @@ export default function Payment() {
         </Button>
       </CardFooter>
     </Card>
+    {result !== null ? (
+        <AlertDialog.AlertDialog defaultOpen={true}>
+          <AlertDialog.AlertDialogContent>
+            <AlertDialog.AlertDialogHeader>
+              <AlertDialog.AlertDialogTitle>
+                Resultados
+              </AlertDialog.AlertDialogTitle>
+              <AlertDialog.AlertDialogDescription>
+                <Table.Table>
+                  <Table.TableCaption>{result.archivo}</Table.TableCaption>
+                  <Table.TableCaption className="font-bold text-sm">
+                    Rango RC: {result.rango_rc}
+                  </Table.TableCaption>
+                  <Table.TableHeader>
+                    <Table.TableRow>
+                      <Table.TableHead className="w-[100px] font-bold">
+                        Caja
+                      </Table.TableHead>
+                      <Table.TableHead className="text-right font-bold">
+                        Valor
+                      </Table.TableHead>
+                    </Table.TableRow>
+                  </Table.TableHeader>
+                  <Table.TableBody>
+                    <Table.TableRow>
+                      <Table.TableCell className="font-medium">
+                        Bancolombia
+                      </Table.TableCell>
+                      <Table.TableCell className="text-right">
+                        ${new Intl.NumberFormat().format(result.bancolombia)}
+                      </Table.TableCell>
+                    </Table.TableRow>
+                    <Table.TableRow>
+                      <Table.TableCell className="font-medium">
+                        Davivienda
+                      </Table.TableCell>
+                      <Table.TableCell className="text-right">
+                        ${new Intl.NumberFormat().format(result.davivienda)}
+                      </Table.TableCell>
+                    </Table.TableRow>
+                    <Table.TableRow>
+                      <Table.TableCell className="font-medium">
+                        Pay U
+                      </Table.TableCell>
+                      <Table.TableCell className="text-right">
+                        ${new Intl.NumberFormat().format(result.payu)}
+                      </Table.TableCell>
+                    </Table.TableRow>
+                    <Table.TableRow>
+                      <Table.TableCell className="font-medium">
+                        Susuerte
+                      </Table.TableCell>
+                      <Table.TableCell className="text-right">
+                        ${new Intl.NumberFormat().format(result.susuerte)}
+                      </Table.TableCell>
+                    </Table.TableRow>
+                    <Table.TableRow>
+                      <Table.TableCell className="font-medium">
+                        Efectivo
+                      </Table.TableCell>
+                      <Table.TableCell className="text-right">
+                        ${new Intl.NumberFormat().format(result.efectivo)}
+                      </Table.TableCell>
+                    </Table.TableRow>
+                    <Table.TableRow>
+                      <Table.TableCell className="font-medium">
+                        Total
+                      </Table.TableCell>
+                      <Table.TableCell className="text-right">
+                        ${new Intl.NumberFormat().format(result.total)}
+                      </Table.TableCell>
+                    </Table.TableRow>
+                  </Table.TableBody>
+                </Table.Table>
+              </AlertDialog.AlertDialogDescription>
+            </AlertDialog.AlertDialogHeader>
+            <AlertDialog.AlertDialogFooter>
+              <AlertDialog.AlertDialogAction onClick={handleClear}>
+                Continue
+              </AlertDialog.AlertDialogAction>
+            </AlertDialog.AlertDialogFooter>
+          </AlertDialog.AlertDialogContent>
+        </AlertDialog.AlertDialog>
+      ) : null}
+    </React.Fragment>
   );
 }

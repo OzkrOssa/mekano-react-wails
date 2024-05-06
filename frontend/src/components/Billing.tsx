@@ -12,7 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-
+import * as AlertDialog from "@/components/ui/alert-dialog";
+import * as Table from "@/components/ui/table";
 import { OpenFile, MekanoBilling } from "@/lib/wailsjs/go/main/App";
 import { mekano } from "@/lib/wailsjs/go/models";
 
@@ -43,7 +44,14 @@ function Billing() {
       setProcessing(false);
     });
   };
+
+  const handleClear = () => {
+    setBillFilePath("");
+    setExtrasFilePath("");
+    setResult(null);
+  }
   return (
+    <React.Fragment>
     <Card>
       <CardHeader>
         <CardTitle>Facturacion</CardTitle>
@@ -92,6 +100,39 @@ function Billing() {
         </Button>
       </CardFooter>
     </Card>
+    {result !== null ? (
+                    <AlertDialog.AlertDialog defaultOpen={true}>
+                        <AlertDialog.AlertDialogContent>
+                            <AlertDialog.AlertDialogHeader>
+                                <AlertDialog.AlertDialogTitle>Resultados</AlertDialog.AlertDialogTitle>
+                                <AlertDialog.AlertDialogDescription>
+                                    <Table.Table>
+                                        <Table.TableBody>
+                                            <Table.TableRow>
+                                                <Table.TableCell className="font-medium">Debito</Table.TableCell>
+                                                <Table.TableCell className="text-right">${new Intl.NumberFormat().format(result.debito)}</Table.TableCell>
+                                            </Table.TableRow>
+                                            <Table.TableRow>
+                                                <Table.TableCell className="font-medium">Credito</Table.TableCell>
+                                                <Table.TableCell className="text-right">${new Intl.NumberFormat().format(result.credito)}</Table.TableCell>
+                                            </Table.TableRow>
+                                            <Table.TableRow>
+                                                <Table.TableCell className="font-medium">Base</Table.TableCell>
+                                                <Table.TableCell className="text-right">${new Intl.NumberFormat().format(result.base)}</Table.TableCell>
+                                            </Table.TableRow>
+                                        </Table.TableBody>
+                                    </Table.Table>
+
+                                </AlertDialog.AlertDialogDescription>
+                            </AlertDialog.AlertDialogHeader>
+                            <AlertDialog.AlertDialogFooter>
+                                <AlertDialog.AlertDialogAction onClick={handleClear}>Continue</AlertDialog.AlertDialogAction>
+                            </AlertDialog.AlertDialogFooter>
+                        </AlertDialog.AlertDialogContent>
+                    </AlertDialog.AlertDialog>
+
+                ) : null}
+    </React.Fragment>
   );
 }
 
