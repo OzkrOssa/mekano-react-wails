@@ -102,6 +102,7 @@ func (mr *mekanoRepository) ProcessPaymentFile(file string) (PaymentStatistics, 
 }
 
 func (mr *mekanoRepository) ProcessBillFile(file string, extras string) (BillingStatistics, error) {
+	mr.statistics.SetFile(file)
 	var itemIvaBaseFinal float64
 
 	xlsx, err := excelize.OpenFile(file)
