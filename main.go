@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"mekano-react-wails/backend/mekano"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -18,15 +19,17 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "mekano-react-wails",
-		Width:  1024,
-		Height: 768,
+		Width:  420,
+		Height: 420,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup:        app.startup,
+		OnStartup:  app.startup,
+		OnDomReady: app.onDomReady,
 		Bind: []interface{}{
 			app,
+			&mekano.PaymentStatistics{},
+			&mekano.BillingStatistics{},
 		},
 	})
 
