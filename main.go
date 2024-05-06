@@ -19,8 +19,8 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "mekano-react-wails",
-		Width:  420,
-		Height: 420,
+		Width:  600,
+		Height: 600,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
