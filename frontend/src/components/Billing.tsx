@@ -68,7 +68,7 @@ function Billing() {
               size={35}
               className="absolute flex items-center justify-center pl-3 bg-transparent text-black"
             />
-            <Input placeholder={billFilePath} className="pl-28"></Input>
+            <Input placeholder={billFilePath} className="pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></Input>
           </div>
         </div>
         <div className="space-y-1">
@@ -82,7 +82,7 @@ function Billing() {
               onClick={OpenExtraDialog}
             />
 
-            <Input placeholder={extrasFilePath} className="pl-28"></Input>
+            <Input placeholder={extrasFilePath} className="pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></Input>
           </div>
         </div>
       </CardContent>
