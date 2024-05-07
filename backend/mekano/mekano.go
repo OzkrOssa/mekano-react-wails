@@ -293,13 +293,13 @@ func (mr *mekanoRepository) ProcessBillFile(file string, extras string) (Billing
 	return data, nil
 }
 
-func exporterFile(mekanoData []Mekano) {
+func exporterFile(mekanoData []Mekano) error {
 	f := excelize.NewFile()
 	// Crea un nuevo sheet.
 	index, _ := f.NewSheet("Sheet1")
 
 	for i, m := range mekanoData {
-		row := i + 2 // Comenzar en la fila 2
+		row := i + 1 // Comenzar en la fila 2
 		f.SetCellValue("Sheet1", fmt.Sprintf("A%d", row), m.Tipo)
 		f.SetCellValue("Sheet1", fmt.Sprintf("B%d", row), m.Prefijo)
 		f.SetCellValue("Sheet1", fmt.Sprintf("C%d", row), m.Numero)
@@ -319,13 +319,15 @@ func exporterFile(mekanoData []Mekano) {
 	// Establece el sheet activo al primero
 	f.SetActiveSheet(index)
 
-	dir, err := os.UserHomeDir()
+	dir, err := os.Getwd()
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	// Guarda el archivo de Excel
 	if err := f.SaveAs(filepath.Join(dir, "CONTABLE.xlsx")); err != nil {
-		fmt.Println(err)
+		return err
 	}
+
+	return nil
 }
