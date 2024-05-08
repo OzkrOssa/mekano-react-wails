@@ -4,7 +4,7 @@ import (
 	"context"
 	"mekano-react-wails/backend/mekano"
 	"net/http"
-	"strings"
+	"os"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -21,7 +21,7 @@ func NewApp() *App {
 
 func (a *App) onDomReady(ctx context.Context) {
 	//Check if API is alive
-	_, err := http.Get("http://localhost:27017")
+	_, err := http.Get(os.Getenv("MONGO_SERVER"))
 	if err != nil {
 		ok, _ := runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
 			Type:          runtime.ErrorDialog,
@@ -67,8 +67,7 @@ func (a *App) MekanoPayment(path string) mekano.PaymentStatistics {
 			Message: err.Error(),
 		})
 	}
-	file := strings.Split(path, "\\")
-	fileName := strings.Split(path, "\\")[len(file)-1]
+
 	mekano := mekano.NewMekano(database)
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
@@ -76,8 +75,7 @@ func (a *App) MekanoPayment(path string) mekano.PaymentStatistics {
 			Message: err.Error(),
 		})
 	}
-
-	data, err := mekano.ProcessPaymentFile(fileName)
+	data, err := mekano.ProcessPaymentFile(path)
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
 			Type:    runtime.ErrorDialog,
@@ -96,11 +94,7 @@ func (a *App) MekanoBilling(path string, extrasPath string) mekano.BillingStatis
 			Message: err.Error(),
 		})
 	}
-	file := strings.Split(path, "\\")
-	fileName := strings.Split(path, "\\")[len(file)-1]
 
-	extrasFile := strings.Split(extrasPath, "\\")
-	extrasFileName := strings.Split(extrasPath, "\\")[len(extrasFile)-1]
 	mekano := mekano.NewMekano(database)
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
@@ -109,7 +103,7 @@ func (a *App) MekanoBilling(path string, extrasPath string) mekano.BillingStatis
 		})
 	}
 
-	data, err := mekano.ProcessBillFile(fileName, extrasFileName)
+	data, err := mekano.ProcessBillFile(path, extrasPath)
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
 			Type:    runtime.ErrorDialog,

@@ -2,6 +2,7 @@ package mekano
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -44,7 +45,7 @@ type database struct {
 
 func NewDatabase() (DatabaseInterface, error) {
 	ctx := context.Background()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(os.Getenv("MONGO_URI")))
 	if err != nil {
 		return nil, err
 	}
